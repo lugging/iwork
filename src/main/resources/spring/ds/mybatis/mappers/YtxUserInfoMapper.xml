@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuntongxun.iwork.ds.entity.YtxUserInfoEntity">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yuntongxun.iwork.ds.entity.YtxUserInfoEntity">
+        <id column="user_id" property="userId" />
+        <result column="phone_num" property="phoneNum" />
+        <result column="user_status" property="userStatus" />
+        <result column="country_code" property="countryCode" />
+        <result column="app_version" property="appVersion" />
+        <result column="complete_code" property="completeCode" />
+        <result column="device_type" property="deviceType" />
+        <result column="device_agent" property="deviceAgent" />
+        <result column="app_id" property="appId" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <sql id="Table_Name">
+		ytx_user_info
+	</sql>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        user_id, phone_num, user_status, country_code, app_version, complete_code, device_type, device_agent, app_id, create_time, update_time
+    </sql>
+
+    <sql id="Base_Where">
+        <trim suffixOverrides="AND">
+            <if test="userId != null">
+                user_id= #{userId}
+                AND
+            </if>
+            <if test="phoneNum != null">
+                phone_num= #{phoneNum}
+                AND
+            </if>
+            <if test="userStatus != null">
+                user_status= #{userStatus}
+                AND
+            </if>
+            <if test="appId != null">
+                app_id= #{appId}
+                AND
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="Base_Select">
+        select
+        <include refid="Base_Column_List" />
+        from
+        <include refid="Table_Name" />
+        <where>
+            <include refid="Base_Where" />
+        </where>
+    </sql>
+
+    <delete id="delete" >
+        delete from
+        <include refid="Table_Name" />
+        <where>
+            <include refid="Base_Where" />
+        </where>
+    </delete>
+
+    <select id="count" parameterType="java.util.Map" resultType="int">
+        select count(1) from
+        <include refid="Table_Name" />
+        <where>
+            <include refid="Base_Where" />
+        </where>
+    </select>
+
+    <select id="selectOne"  resultMap="BaseResultMap">
+        <include refid="Base_Select" />
+    </select>
+
+    <select id="selectList"  resultMap="BaseResultMap">
+        <include refid="Base_Select" />
+    </select>
+
+    <select id="selectMap"  resultMap="BaseResultMap">
+        <include refid="Base_Select" />
+    </select>
+
+    <select id="selectForUpdate" resultMap="BaseResultMap" useCache="false">
+        <include refid="Base_Select" />
+        for update
+    </select>
+</mapper>
